@@ -2,17 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerControl : MonoBehaviour {
+public class Player : MonoBehaviour {
 
     public float velocity;
-    public Animator animator;
     public SpriteRenderer spriteRenderer;
+    public Animator animator;
     public GameObject cursor;
 
-	void Start ()
+    public GameObject myWeapon;
+    private Weapon myWeaponScript;
+
+    void Start ()
     {
-        cursor = GameObject.Find("Cursor");
-	}
+        myWeaponScript = myWeapon.GetComponent<Weapon>();
+    }
 	
 	void Update ()
     {
@@ -28,5 +31,11 @@ public class PlayerControl : MonoBehaviour {
         spriteRenderer.flipX = !lookAtRight;
 
         animator.SetBool("isMoving", (movement.x != 0) || (0 != movement.y));
+
+
+
+
+        if (Input.GetKey(KeyCode.Mouse0))
+            myWeaponScript.WeaponFire();
     }
 }
