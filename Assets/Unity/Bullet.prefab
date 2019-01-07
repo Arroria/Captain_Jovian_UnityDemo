@@ -20,11 +20,13 @@ GameObject:
   m_Component:
   - component: {fileID: 4894430863400014}
   - component: {fileID: 212474176812876298}
+  - component: {fileID: 50383885883202780}
   - component: {fileID: 61908994008572740}
   - component: {fileID: 114735903468639168}
+  - component: {fileID: 114499131332221912}
   m_Layer: 0
   m_Name: Bullet
-  m_TagString: Untagged
+  m_TagString: AllyAttack
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -42,6 +44,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!50 &50383885883202780
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1376509152212704}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!61 &61908994008572740
 BoxCollider2D:
   m_ObjectHideFlags: 1
@@ -51,7 +73,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: -0.5}
@@ -67,6 +89,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 20, y: 5}
   m_EdgeRadius: 0
+--- !u!114 &114499131332221912
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1376509152212704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3ecf503a4ec8444e8d026203b561764, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isUseRotation: 1
+  angle: 0
 --- !u!114 &114735903468639168
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -78,8 +113,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fd01f5b6ffcbef41b7576995cc9f0d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  direction: {x: 0, y: 0}
   velocity: 200
+  direction: {x: 0, y: 0}
 --- !u!212 &212474176812876298
 SpriteRenderer:
   m_ObjectHideFlags: 1
