@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 public class Player : MonoBehaviour {
 
@@ -35,23 +36,27 @@ public class Player : MonoBehaviour {
         animator.SetBool("isMoving", (movement.x != 0) || (0 != movement.y));
 
 
-
-        myDirection = (cursor.transform.position - transform.position).normalized;
-        lrFliper.In(myDirection);
-
+        UpdateDirection();
 
 
         if (Input.GetKey(KeyCode.Mouse0))
             myWeaponScript.WeaponFire();
     }
 
+    private void UpdateDirection()
+    {
+        Vector2 curPos = cursor.transform.position;
+        Vector2 myPos = transform.position;
+        myDirection = (curPos - myPos);
+        myDirection.Normalize();
+        lrFliper.In(myDirection);
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("CollT");
     }
 
     public void OnCollisionEnter2DByPhysicalCollider(Collision2D collision)
     {
-        Debug.Log("CollC");
     }
 }
