@@ -1763,6 +1763,9 @@ MonoBehaviour:
   animator: {fileID: 1972082567}
   cursor: {fileID: 694959781}
   myWeapon: {fileID: 324997758}
+  health: 10
+  hitCooldown_unit: 2
+  hitEffect_unit: 0.2
   myDirection: {x: 0, y: 0}
 --- !u!95 &1972082567
 Animator:

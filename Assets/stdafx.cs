@@ -23,3 +23,17 @@ using UnityEngine;
             return new Vector2(_x2, _y2);
         }
     }
+
+public static class TimeEx
+{
+    public static bool Cooldown(ref float time)
+    {
+        time -= Time.deltaTime;
+        if (time <= 0)
+        {
+            time = 0;
+            return true;
+        }
+        return false;
+    }
+}

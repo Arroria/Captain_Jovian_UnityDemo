@@ -20,4 +20,14 @@ public class EnemyBullet : MonoBehaviour
         Vector3 movement = direction * velocity * Time.deltaTime;
         transform.position += movement;
     }
+
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.transform.tag == "Player")
+        {
+            collision.transform.GetComponent<Player>().Hit(1);
+            Destroy(gameObject);
+        }
+    }
 }

@@ -194,9 +194,7 @@ public class Enemy : MonoBehaviour {
             GameObject player = GameObject.FindWithTag("Player");
             if (player == null) return false;
 
-            Vector2 playerPos = player.transform.position;
-            Vector2 myPos = transform.position;
-            Vector2 playerDirst = playerPos - myPos;
+            Vector2 playerDirst = Vector2ex.By3(player.transform.position) - Vector2ex.By3(transform.position);
             playerDist = playerDirst.magnitude;
             playerDir = playerDirst / playerDist;
         }

@@ -13,6 +13,13 @@ public class Player : MonoBehaviour {
     public GameObject myWeapon;
     private Weapon myWeaponScript;
 
+
+    [SerializeField] private int health;
+    [SerializeField] private float hitCooldown_unit;
+    private float hitCooldown;
+    [SerializeField] private float hitEffect_unit;
+
+
     [HideInInspector] public Vector2 myDirection;
     private LRFliper lrFliper;
 
@@ -25,6 +32,22 @@ public class Player : MonoBehaviour {
 
     void Update()
     {
+        if (health == 0)
+            return;
+
+        if (hitCooldown > 0)
+        {
+            bool enable;
+            if (TimeEx.Cooldown(ref hitCooldown))
+                enable = true;
+            else
+                enable = ((int)((hitCooldown_unit - hitCooldown) / hitEffect_unit) & 1) != 0;
+
+            spriteRenderer.enabled = enable;
+            //자식 렌더러는 어케끄냐
+        }
+
+
         Vector2 movement = new Vector2(0, 0);
         if (Input.GetKey(KeyCode.A)) movement.x--;
         if (Input.GetKey(KeyCode.D)) movement.x++;
@@ -52,11 +75,28 @@ public class Player : MonoBehaviour {
         lrFliper.In(myDirection);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+
+
+    public bool Hit(int hp)
     {
+        if (hitCooldown > 0)
+            return false;
+
+        HealthDown(hp);
+        if (health != 0)
+        {
+            hitCooldown = hitCooldown_unit;
+        }
+        return true;
     }
 
-    public void OnCollisionEnter2DByPhysicalCollider(Collision2D collision)
+    public void HealthDown(int hp)
     {
+        health -= hp;
+        if (health <= 0)
+        {
+            animator.SetBool("isDead", true);
+            health = 0;
+        }
     }
 }
