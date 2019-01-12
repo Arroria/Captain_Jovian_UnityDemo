@@ -2,36 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour {
-    private enum BehaviorState
-    {
-        Idle,
-        Moving,
-        Attack,
-    };
+public abstract class Enemy : MonoBehaviour
+{
+    protected LRFliper lrFliper;
+    protected Animator animator;
 
-    public GameObject myWeapon;
-    private EnemyWeapon myWeaponController;
 
-    public float weaponRotateSpeed;
-
-    public int health;
-    private BehaviorState state;
+    [SerializeField] private int health;
     private float stateTime;
     private float stunTime;
+    [SerializeField] private float stunTime_unit;
 
-    [HideInInspector] public Vector2 direction;
+    private Vector2 viewDir;
 
-    private LRFliper lrFliper;
-    private Animator animator;
-
-    void Start()
+    protected virtual void Start()
     {
         lrFliper = GetComponent<LRFliper>();
         animator = GetComponent<Animator>();
-        myWeaponController = myWeapon.GetComponent<EnemyWeapon>();
 
-        state = BehaviorState.Idle;
         stateTime = 0;
         stunTime = 0;
     }
@@ -41,49 +29,21 @@ public class Enemy : MonoBehaviour {
         if (health == 0)
             return;
 
-        if (!StunCooling())
+        if (stunTime == 0 || TimeEx.Cooldown(ref stunTime) == 0)
         {
-            if (!StateCooling())
+            if (TimeEx.Cooldown(ref stateTime) == 0)
                 StateChange();
-
-            if (BehaviorState.Attack == state)
-            {
-                if (PlayerTracking())
-                {
-                    Vector2 playerDir;
-                    {
-                        GameObject player = GameObject.FindWithTag("Player");
-                        playerDir = (Vector2ex.By3(player.transform.position) - Vector2ex.By3(transform.position)).normalized;
-                    }
-
-                    float angle = Vector2.Angle(direction, playerDir);
-                    if (angle <= weaponRotateSpeed * Time.deltaTime)
-                    {
-                        direction = playerDir;
-                        myWeaponController.WeaponFire();
-                    }
-                    else
-                    {
-                        bool isRevClockwise = direction.x * playerDir.y - direction.y * playerDir.x >= 0;
-                        direction = Vector2ex.Rotate(direction, weaponRotateSpeed * Mathf.Deg2Rad * Time.deltaTime * (isRevClockwise ? 1 : -1));
-                    }
-                }
-                else
-                    SetStateIdle();
-            }
-            else if (BehaviorState.Moving == state)
-            {
-                Vector3 dir = direction;
-                transform.position += dir;
-            }
+            StateUpdate();
         }
+        animator.SetBool("isHit", stunTime != 0);
 
-
+        //시선처리용 코드
+        //릴리즈때 지워야댐
         //raycast test
-        RaycastHit2D rcHit = Physics2D.Raycast(transform.position, direction, 10000.0f, 1 << LayerMask.NameToLayer("Map"));
+        RaycastHit2D rcHit = Physics2D.Raycast(transform.position, viewDir, 10000.0f, 1 << LayerMask.NameToLayer("Map"));
         if (rcHit.collider != null)
         {
-            Vector2 dirst = direction * rcHit.distance;
+            Vector2 dirst = viewDir * rcHit.distance;
             Vector3 collPos = transform.position + new Vector3(dirst.x, dirst.y, 0);
             Vector3 linePos = new Vector3(transform.position.x, transform.position.y, 0);
 
@@ -91,120 +51,41 @@ public class Enemy : MonoBehaviour {
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.tag == "AllyAttack")
-        {
-            HealthDown(1);
-            stunTime = 0.2f;
-            animator.SetBool("isHit", true);
-        }
-    }
+    public virtual void OnCollisionEnter2DByPhysicalCollider(Collision2D collision) {}
+    protected abstract void StateChange();
+    protected abstract void StateUpdate();
+    protected void ResetStateTime(float time) { stateTime = time; }
 
-    public void OnCollisionEnter2DByPhysicalCollider(Collision2D collision) { SetStateMove(); }
-
-
-
-    private bool StunCooling()
-    {
-        if (stunTime == 0)
-            return false;
-
-        if (stunTime > Time.deltaTime)
-        {
-            stunTime -= Time.deltaTime;
-            return true;
-        }
-        else
-            stunTime = 0;
-
-        animator.SetBool("isHit", false);
-        return false;
-    }
-
-
-    private bool StateCooling()
-    {
-        if (stateTime == 0)
-            return false;
-
-        if (stateTime > Time.deltaTime)
-        {
-            stateTime -= Time.deltaTime;
-            return true;
-        }
-        else
-            stateTime = 0;
-
-        return false;
-    }
-    private void StateChange()
-    {
-        if (Random.Range(0.0f, 1.0f) <= 0.8f && PlayerTracking())   SetStateAttack();
-        else if (Random.Range(0, 2) == 0)                           SetStateIdle();
-        else                                                        SetStateMove();
-    }
-    private void SetStateIdle()
-    {
-        state = BehaviorState.Idle;
-        animator.SetBool("isMoving", false);
-
-        ResetStateTime();
-    }
-    private void SetStateMove()
-    {
-        ResetDirection();
-
-        state = BehaviorState.Moving;
-        animator.SetBool("isMoving", true);
-
-        ResetStateTime();
-    }
-    private void SetStateAttack()
-    {
-        state = BehaviorState.Attack;
-        animator.SetBool("isMoving", false);
-
-        ResetStateTime();
-    }
-    private void ResetStateTime() { stateTime = Random.Range(0.5f, 2.0f); }
-
-    private void ResetDirection()
+    protected void ResetViewDir()
     {
         float angle = Random.Range(0.0f, Mathf.PI * 2);
-        direction = new Vector2(Mathf.Sin(angle), Mathf.Cos(angle));
-        lrFliper.In(direction);
+        viewDir = new Vector2(Mathf.Sin(angle), Mathf.Cos(angle));
+        lrFliper.In(viewDir);
     }
 
-    private void HealthDown(int value)
+
+
+    public virtual void HealthDown(int hp)
     {
-        if ((health -= value) <= 0)
+        health -= hp;
+        if (health <= 0)
         {
-            health = 0;
             animator.SetBool("isDead", true);
+            health = 0;
         }
     }
 
-
-    private bool PlayerTracking()
+    public virtual void Hit(int hp)
     {
-        Vector2 playerDir;
-        float playerDist;
-        {
-            GameObject player = GameObject.FindWithTag("Player");
-            if (player == null) return false;
+        HealthDown(hp);
+        if (health != 0)
+            stunTime = stunTime_unit;
+    }
 
-            Vector2 playerDirst = Vector2ex.By3(player.transform.position) - Vector2ex.By3(transform.position);
-            playerDist = playerDirst.magnitude;
-            playerDir = playerDirst / playerDist;
-        }
-
-        RaycastHit2D rcHit = Physics2D.Raycast(transform.position, playerDir, 10000.0f, 1 << LayerMask.NameToLayer("Map"));
-        if (rcHit.collider != null)
-        {
-            if (rcHit.distance < playerDist)
-                return false;
-        }
-        return true;
+    public Vector2 ViewDir() { return viewDir; }
+    public void SetViewDir(Vector2 _viewDir)
+    {
+        viewDir = _viewDir;
+        lrFliper.In(viewDir);
     }
 }

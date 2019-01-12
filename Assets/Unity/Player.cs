@@ -38,7 +38,7 @@ public class Player : MonoBehaviour {
         if (hitCooldown > 0)
         {
             bool enable;
-            if (TimeEx.Cooldown(ref hitCooldown))
+            if (TimeEx.Cooldown(ref hitCooldown) == 0)
                 enable = true;
             else
                 enable = ((int)((hitCooldown_unit - hitCooldown) / hitEffect_unit) & 1) != 0;

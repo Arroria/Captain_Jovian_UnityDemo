@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyWeapon : MonoBehaviour
 {
-    private Enemy enemy;
+    private Brigand enemy;
     private LRFliper lrFliper;
 
     public GameObject bulletPrefab;
@@ -15,7 +15,7 @@ public class EnemyWeapon : MonoBehaviour
 
     void Start()
     {
-        enemy = GetComponentInParent<Enemy>();
+        enemy = GetComponentInParent<Brigand>();
         lrFliper = GetComponent<LRFliper>();
     }
 
@@ -44,5 +44,5 @@ public class EnemyWeapon : MonoBehaviour
         if (cooldown > Time.deltaTime)  cooldown -= Time.deltaTime;
         else                            cooldown = 0;
     }
-    private Vector2 _my_dir() { return enemy.direction; }
+    private Vector2 _my_dir() { return enemy.ViewDir(); }
 }

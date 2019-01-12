@@ -20,4 +20,12 @@ public class Bullet : MonoBehaviour {
         Vector3 movement = direction * velocity * Time.deltaTime;
         transform.position += movement;
 	}
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.transform.tag == "Enemy")
+        {
+            collision.transform.GetComponent<Enemy>().Hit(1);
+        }
+    }
 }

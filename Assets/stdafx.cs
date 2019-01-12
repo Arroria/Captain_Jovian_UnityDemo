@@ -26,14 +26,14 @@ using UnityEngine;
 
 public static class TimeEx
 {
-    public static bool Cooldown(ref float time)
+    public static float Cooldown(ref float time)
     {
         time -= Time.deltaTime;
         if (time <= 0)
         {
             time = 0;
-            return true;
+            return time;
         }
-        return false;
+        return time;
     }
 }
