@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyWeapon : MonoBehaviour
 {
-    private Brigand enemy;
+    private Enemy enemy;
     private LRFliper lrFliper;
 
     public GameObject bulletPrefab;
@@ -15,7 +15,7 @@ public class EnemyWeapon : MonoBehaviour
 
     void Start()
     {
-        enemy = GetComponentInParent<Brigand>();
+        enemy = GetComponentInParent<Enemy>();
         lrFliper = GetComponent<LRFliper>();
     }
 

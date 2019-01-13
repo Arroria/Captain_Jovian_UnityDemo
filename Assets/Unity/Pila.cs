@@ -15,7 +15,6 @@ public sealed class Pila : Enemy {
     {
         base.Start();
         state = BehaviorState.Idle;
-        Debug.Log("Test : Pila_State_Init");
     }
 
     protected override void StateUpdate()
