@@ -11,15 +11,15 @@ public class EnemyWeapon : MonoBehaviour
 
 
     public float cooldownMax;
-    private float cooldown;
+    protected float cooldown;
 
-    void Start()
+    protected void Start()
     {
         enemy = GetComponentInParent<Enemy>();
         lrFliper = GetComponent<LRFliper>();
     }
 
-    void Update()
+    protected void Update()
     {
         lrFliper.In(_my_dir());
 
@@ -34,7 +34,7 @@ public class EnemyWeapon : MonoBehaviour
 
         GameObject bullet = Instantiate(bulletPrefab);
         bullet.transform.position = transform.position;
-        bullet.GetComponent<EnemyBullet>().direction = _my_dir();
+        bullet.GetComponent<Projectile>().SetDirection(_my_dir());
         return true;
     }
 

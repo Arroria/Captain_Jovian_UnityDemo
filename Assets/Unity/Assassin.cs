@@ -19,6 +19,7 @@ public class Assassin : Enemy {
 
     private Vector2 destDir;
     private Vector2 dashDir;
+    private bool playerLost;
 
     private new void Start()
     {
@@ -31,34 +32,45 @@ public class Assassin : Enemy {
     {
         if (BehaviorState.Attack == state)
         {
-            if (PlayerTracking())
+            if (playerLost)
+                transform.position += Vector2ex.To3(dashDir * 1);
+            else
             {
-                GameObject player = GameObject.FindWithTag("Player");
-                Vector2 destDir = (Vector2ex.By3(player.transform.position) - Vector2ex.By3(transform.position)).normalized;
-
-                Vector2 viewDir = ViewDir();
-                float angle = Vector2.Angle(destDir, viewDir);
-                if (angle <= weaponRotateSpeed * Time.deltaTime)
+                if (PlayerTracking())
                 {
-                    destDir = viewDir;
-                    myWeaponController.WeaponFire();
+                    GameObject player = GameObject.FindWithTag("Player");
+                    destDir = (Vector2ex.By3(player.transform.position) - Vector2ex.By3(transform.position)).normalized;
+
+                    Vector2 viewDir = ViewDir();
+                    float angle = Vector2.Angle(destDir, viewDir);
+                    if (angle <= weaponRotateSpeed * Time.deltaTime)
+                    {
+                        SetViewDir(destDir);
+                        myWeaponController.WeaponFire();
+                    }
+                    else
+                    {
+                        bool isRevClockwise = viewDir.x * destDir.y - viewDir.y * destDir.x >= 0;
+                        SetViewDir(Vector2ex.Rotate(viewDir, weaponRotateSpeed * Mathf.Deg2Rad * Time.deltaTime * (isRevClockwise ? 1 : -1)));
+                    }
+
+                    transform.position += Vector2ex.To3(dashDir * 1);
                 }
                 else
-                {
-                    bool isRevClockwise = viewDir.x * destDir.y - viewDir.y * destDir.x >= 0;
-                    SetViewDir(Vector2ex.Rotate(viewDir, weaponRotateSpeed * Mathf.Deg2Rad * Time.deltaTime * (isRevClockwise ? 1 : -1)));
-                }
-
-                transform.position += Vector2ex.To3(dashDir * 1);
+                    playerLost = true;
             }
-            else
-                SetStateIdle();
         }
         else if (BehaviorState.Moving == state)
             transform.position += Vector2ex.To3(ViewDir());
     }
 
-    public override void OnCollisionEnter2DByPhysicalCollider(Collision2D collision) { SetStateMove(); }
+    public override void OnCollisionEnter2DByPhysicalCollider(Collision2D collision)
+    {
+        if (state == BehaviorState.Attack)
+            SetStateAttack();
+        else
+            SetStateMove();
+    }
 
     protected override void StateChange()
     {
@@ -89,6 +101,7 @@ public class Assassin : Enemy {
 
         GameObject player = GameObject.FindWithTag("Player");
         dashDir = (Vector2ex.By3(player.transform.position) - Vector2ex.By3(transform.position)).normalized;
+        playerLost = false;
 
         ResetStateTime();
     }

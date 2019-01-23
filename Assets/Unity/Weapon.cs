@@ -39,7 +39,7 @@ public class Weapon : MonoBehaviour {
 
         GameObject bullet = Instantiate(bulletPrefab);
         bullet.transform.position = transform.position;
-        bullet.GetComponent<Bullet>().direction = _my_dir();
+        bullet.GetComponent<Projectile>().SetDirection(_my_dir());
         return true;
     }
 

@@ -9,8 +9,8 @@ public abstract class Enemy : MonoBehaviour
 
 
     [SerializeField] private int health;
-    private float stateTime;
-    private float stunTime;
+    protected float stateTime;
+    protected float stunTime;
     [SerializeField] private float stunTime_unit;
 
     private Vector2 viewDir;
