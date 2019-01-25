@@ -10,9 +10,7 @@ public class Brigand : Enemy {
         Attack,
     };
 
-    public GameObject myWeapon;
-    private EnemyWeapon myWeaponController;
-
+    [SerializeField] private Weapon weapon;
     [SerializeField] private float weaponRotateSpeed;
 
     private BehaviorState state;
@@ -22,7 +20,6 @@ public class Brigand : Enemy {
     private new void Start()
     {
         base.Start();
-        myWeaponController = myWeapon.GetComponent<EnemyWeapon>();
         state = BehaviorState.Idle;
     }
 
@@ -35,24 +32,23 @@ public class Brigand : Enemy {
                 GameObject player = GameObject.FindWithTag("Player");
                 Vector2 destDir = (Vector2ex.By3(player.transform.position) - Vector2ex.By3(transform.position)).normalized;
 
-                Vector2 viewDir = ViewDir();
-                float angle = Vector2.Angle(destDir, viewDir);
+                float angle = Vector2.Angle(destDir, direction);
                 if (angle <= weaponRotateSpeed * Time.deltaTime)
                 {
-                    destDir = viewDir;
-                    myWeaponController.WeaponFire();
+                    destDir = direction;
+                    weapon.WeaponFire();
                 }
                 else
                 {
-                    bool isRevClockwise = viewDir.x * destDir.y - viewDir.y * destDir.x >= 0;
-                    SetViewDir(Vector2ex.Rotate(viewDir, weaponRotateSpeed * Mathf.Deg2Rad * Time.deltaTime * (isRevClockwise ? 1 : -1)));
+                    bool isRevClockwise = direction.x * destDir.y - direction.y * destDir.x >= 0;
+                    direction = Vector2ex.Rotate(direction, weaponRotateSpeed * Mathf.Deg2Rad * Time.deltaTime * (isRevClockwise ? 1 : -1));
                 }
             }
             else
                 SetStateIdle();
         }
         else if (BehaviorState.Moving == state)
-            transform.position += Vector2ex.To3(ViewDir());
+            transform.position += Vector2ex.To3(direction);
     }
 
     public override void OnCollisionEnter2DByPhysicalCollider(Collision2D collision) { SetStateMove(); }

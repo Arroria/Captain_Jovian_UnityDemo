@@ -2,20 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyBullet : MonoBehaviour
+
+public class ProjectileEffector : MonoBehaviour
 {
     [SerializeField] Projectile projectile;
+    [SerializeField] string target;
     [SerializeField] int damage;
 
     private void Start()
     { if (projectile == null) Debug.LogError("\"this.projectile\" is null"); }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    virtual protected void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Player")
+        if (collision.tag == target)
         {
-            if (collision.GetComponent<Player>().Hit(damage))
-                Destroy(gameObject);
+            collision.GetComponent<Character>().Hit(damage);
+            Destroy(gameObject);
         }
     }
 }

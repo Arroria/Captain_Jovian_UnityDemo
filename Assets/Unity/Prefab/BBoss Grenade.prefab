@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 1551397198056236539}
   - component: {fileID: 4943431881229623058}
   - component: {fileID: 1115883945946650544}
-  - component: {fileID: 4399731487685430596}
-  - component: {fileID: 4913849962250609539}
+  - component: {fileID: 7757671843151181786}
+  - component: {fileID: 87445218145813424}
   m_Layer: 0
   m_Name: BBoss Grenade
   m_TagString: Untagged
@@ -147,7 +147,7 @@ MonoBehaviour:
   damage: 0
   launchingForce: 150
   brakingForce: 100
---- !u!114 &4399731487685430596
+--- !u!114 &7757671843151181786
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -156,12 +156,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1741882070931441941}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f163d03dd7d177d4195b665a00d56d0e, type: 3}
+  m_Script: {fileID: 11500000, guid: 2dda8ce10d6a3554c87f62ec9f2a4669, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   projectile: {fileID: 1115883945946650544}
-  damage: 1
---- !u!114 &4913849962250609539
+  target: Player
+  damage: 5
+--- !u!114 &87445218145813424
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -170,9 +171,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1741882070931441941}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 508b3f525fcf47946a02093cab3d1cc2, type: 3}
+  m_Script: {fileID: 11500000, guid: 2029f72938988ad488aa8278c813af7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isUseRotation: 0
+  spriteRenderer: {fileID: 4411562635466508100}
+  isRotatable: 0
   angle: 0
   projectile: {fileID: 1115883945946650544}

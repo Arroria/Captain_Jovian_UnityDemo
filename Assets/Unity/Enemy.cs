@@ -2,18 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Enemy : MonoBehaviour
+public abstract class Enemy : Character
 {
     protected LRFliper lrFliper;
     protected Animator animator;
 
-
-    [SerializeField] private int health;
+    
     protected float stateTime;
     protected float stunTime;
     [SerializeField] private float stunTime_unit;
 
-    private Vector2 viewDir;
 
     protected virtual void Start()
     {
@@ -26,10 +24,10 @@ public abstract class Enemy : MonoBehaviour
 
     void Update()
     {
-        if (health == 0)
+        if (HealthPoint() == 0)
             return;
 
-        if (stunTime == 0 || TimeEx.Cooldown(ref stunTime) == 0)
+        if (stunTime_unit == 0 || stunTime == 0 || TimeEx.Cooldown(ref stunTime) == 0)
         {
             if (TimeEx.Cooldown(ref stateTime) == 0)
                 StateChange();
@@ -40,10 +38,10 @@ public abstract class Enemy : MonoBehaviour
         //시선처리용 코드
         //릴리즈때 지워야댐
         //raycast test
-        RaycastHit2D rcHit = Physics2D.Raycast(transform.position, viewDir, 10000.0f, 1 << LayerMask.NameToLayer("Map"));
+        RaycastHit2D rcHit = Physics2D.Raycast(transform.position, direction, 10000.0f, 1 << LayerMask.NameToLayer("Map"));
         if (rcHit.collider != null)
         {
-            Vector2 dirst = viewDir * rcHit.distance;
+            Vector2 dirst = direction * rcHit.distance;
             Vector3 collPos = transform.position + new Vector3(dirst.x, dirst.y, 0);
             Vector3 linePos = new Vector3(transform.position.x, transform.position.y, 0);
 
@@ -59,33 +57,21 @@ public abstract class Enemy : MonoBehaviour
     protected void ResetViewDir()
     {
         float angle = Random.Range(0.0f, Mathf.PI * 2);
-        viewDir = new Vector2(Mathf.Sin(angle), Mathf.Cos(angle));
-        lrFliper.In(viewDir);
+        direction = new Vector2(Mathf.Sin(angle), Mathf.Cos(angle));
     }
 
 
 
-    public virtual void HealthDown(int hp)
+    public override bool Hit(int _damage)
     {
-        health -= hp;
-        if (health <= 0)
+        if (base.Hit(_damage))
         {
-            animator.SetBool("isDead", true);
-            health = 0;
+            if (HealthPoint() != 0)
+                stunTime = stunTime_unit;
+            else
+                animator.SetBool("isDead", true);
+            return true;
         }
-    }
-
-    public virtual void Hit(int hp)
-    {
-        HealthDown(hp);
-        if (health != 0)
-            stunTime = stunTime_unit;
-    }
-
-    public Vector2 ViewDir() { return viewDir; }
-    public void SetViewDir(Vector2 _viewDir)
-    {
-        viewDir = _viewDir;
-        lrFliper.In(viewDir);
+        return false;
     }
 }

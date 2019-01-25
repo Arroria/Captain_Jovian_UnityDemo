@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 50383885883202780}
   - component: {fileID: 61908994008572740}
   - component: {fileID: 114735903468639168}
-  - component: {fileID: 2196282106043942630}
+  - component: {fileID: 5660914975826313404}
   - component: {fileID: 1596051900679073244}
   m_Layer: 0
   m_Name: Bullet
@@ -145,7 +145,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   velocity: 200
   damage: 0
---- !u!114 &2196282106043942630
+--- !u!114 &5660914975826313404
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -154,10 +154,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1376509152212704}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67d60c727976e6042beacdf529f3d415, type: 3}
+  m_Script: {fileID: 11500000, guid: 2dda8ce10d6a3554c87f62ec9f2a4669, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   projectile: {fileID: 114735903468639168}
+  target: Enemy
   damage: 2
 --- !u!114 &1596051900679073244
 MonoBehaviour:
@@ -168,9 +169,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1376509152212704}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 508b3f525fcf47946a02093cab3d1cc2, type: 3}
+  m_Script: {fileID: 11500000, guid: 2029f72938988ad488aa8278c813af7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isUseRotation: 1
+  spriteRenderer: {fileID: 212474176812876298}
+  isRotatable: 1
   angle: 0
   projectile: {fileID: 114735903468639168}

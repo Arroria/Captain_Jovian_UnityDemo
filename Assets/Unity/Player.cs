@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class Player : MonoBehaviour {
+public class Player : Character
+{
 
     public float velocity;
     public SpriteRenderer spriteRenderer;
@@ -14,13 +15,11 @@ public class Player : MonoBehaviour {
     private Weapon myWeaponScript;
 
 
-    [SerializeField] private int health;
     [SerializeField] private float hitCooldown_unit;
     private float hitCooldown;
     [SerializeField] private float hitEffect_unit;
 
 
-    [HideInInspector] public Vector2 myDirection;
     private LRFliper lrFliper;
 
     void Start ()
@@ -32,7 +31,7 @@ public class Player : MonoBehaviour {
 
     void Update()
     {
-        if (health == 0)
+        if (HealthPoint() == 0)
             return;
 
         if (hitCooldown > 0)
@@ -70,33 +69,28 @@ public class Player : MonoBehaviour {
     {
         Vector2 curPos = cursor.transform.position;
         Vector2 myPos = transform.position;
-        myDirection = (curPos - myPos);
-        myDirection.Normalize();
-        lrFliper.In(myDirection);
+        direction = (curPos - myPos);
+        direction.Normalize();
+
+        lrFliper.In(direction);
     }
 
 
 
-    public bool Hit(int hp)
+    public override bool Hit(int _damage)
     {
         if (hitCooldown > 0)
             return false;
 
-        HealthDown(hp);
-        if (health != 0)
+        if (base.Hit(_damage))
         {
-            hitCooldown = hitCooldown_unit;
+            if (HealthPoint() == 0)
+                animator.SetBool("isDead", true);
+            else
+                hitCooldown = hitCooldown_unit;
+            return true;
         }
-        return true;
-    }
-
-    public void HealthDown(int hp)
-    {
-        health -= hp;
-        if (health <= 0)
-        {
-            animator.SetBool("isDead", true);
-            health = 0;
-        }
+        return false;
+        
     }
 }

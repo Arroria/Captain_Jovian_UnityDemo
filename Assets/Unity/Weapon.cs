@@ -4,44 +4,35 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour {
 
-    private Player player;
-    private LRFliper lrFliper;
+    [SerializeField] private Character weaponOwner;
+    [SerializeField] private GameObject projectilePrefab;
 
-    public GameObject bulletPrefab;
+    [SerializeField] private LRFliper lrFliper;
 
-    public float coolTimeMax;
-    private float coolTime;
 
-    void Start ()
-    {
-        lrFliper = GetComponent<LRFliper>();
-        player = transform.parent.GetComponent<Player>();
-    }
-	
+    [SerializeField] private float maxCooldown;
+    private float cooldown;
+
+
+
 	void Update ()
     {
-        lrFliper.In(_my_dir());
+        lrFliper.In(weaponOwner.Direction());
 
-        //Cooldown
-        if (coolTime > Time.deltaTime)
-            coolTime -= Time.deltaTime;
-        else
-            coolTime = 0;
+        TimeEx.Cooldown(ref cooldown);
     }
 
     public bool WeaponFire()
     {
-        if (coolTime != 0)
+        if (cooldown != 0)
             return false;
 
 
-        coolTime = coolTimeMax;
+        cooldown = maxCooldown;
 
-        GameObject bullet = Instantiate(bulletPrefab);
+        GameObject bullet = Instantiate(projectilePrefab);
         bullet.transform.position = transform.position;
-        bullet.GetComponent<Projectile>().SetDirection(_my_dir());
+        bullet.GetComponent<Projectile>().SetDirection(weaponOwner.Direction());
         return true;
     }
-
-    Vector2 _my_dir() { return player.myDirection; }
 }

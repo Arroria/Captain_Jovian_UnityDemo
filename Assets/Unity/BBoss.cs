@@ -17,8 +17,8 @@ public class BBoss : Enemy {
 
     public GameObject myWeapon_MG;
     public GameObject myWeapon_GL;
-    private EnemyWeapon myWeaponController_MG;
-    private EnemyWeapon myWeaponController_GL;
+    [SerializeField] private Weapon weapon_MG;
+    [SerializeField] private Weapon weapon_GrenadeLauncher;
 
 
     [SerializeField] private float bikeSpeed;
@@ -36,9 +36,7 @@ public class BBoss : Enemy {
     private new void Start()
     {
         base.Start();
-        myWeaponController_MG = myWeapon_MG.GetComponent<EnemyWeapon>();
-        myWeaponController_GL = myWeapon_GL.GetComponent<EnemyWeapon>();
-        myWeaponController_GL.GetComponent<SpriteRenderer>().enabled = false;
+        weapon_GrenadeLauncher.GetComponent<SpriteRenderer>().enabled = false;
         astarPathFinder = GetComponent<Astar>();
         state = BehaviorState.Idle;
     }
@@ -118,18 +116,17 @@ public class BBoss : Enemy {
                 GameObject player = GameObject.FindWithTag("Player");
                 Vector2 destDir = (Vector2ex.By3(player.transform.position) - Vector2ex.By3(transform.position)).normalized;
 
-                Vector2 viewDir = ViewDir();
-                float angle = Vector2.Angle(destDir, viewDir);
+                float angle = Vector2.Angle(destDir, direction);
                 if (angle <= weaponRotateSpeed * Time.deltaTime)
                 {
-                    if (state == BehaviorState.Attack_grenadelauncher)  myWeaponController_GL.WeaponFire();
-                    else                                                myWeaponController_MG.WeaponFire();
-                    SetViewDir(destDir);
+                    if (state == BehaviorState.Attack_grenadelauncher)  weapon_GrenadeLauncher.WeaponFire();
+                    else                                                weapon_MG.WeaponFire();
+                    direction = destDir;
                 }
                 else
                 {
-                    bool isRevClockwise = viewDir.x * destDir.y - viewDir.y * destDir.x >= 0;
-                    SetViewDir(Vector2ex.Rotate(viewDir, weaponRotateSpeed * Mathf.Deg2Rad * Time.deltaTime * (isRevClockwise ? 1 : -1)));
+                    bool isRevClockwise = direction.x * destDir.y - direction.y * destDir.x >= 0;
+                    direction = Vector2ex.Rotate(direction, weaponRotateSpeed * Mathf.Deg2Rad * Time.deltaTime * (isRevClockwise ? 1 : -1));
                 }
             }
             else
@@ -145,7 +142,7 @@ public class BBoss : Enemy {
             }
         }
         else if (BehaviorState.Moving == state)
-            transform.position += Vector2ex.To3(ViewDir());
+            transform.position += Vector2ex.To3(direction);
     }
 
     public override void OnCollisionEnter2DByPhysicalCollider(Collision2D collision)
@@ -184,15 +181,15 @@ public class BBoss : Enemy {
             else
             {
                 float rnd = Random.Range(0, 100);
-                //if (rnd < 65)   SetState_AttackMachinegun();
-                //else
+                if (rnd < 65)   SetState_AttackMachinegun();
+                else
                     SetState_AttackGrenadelauncher();
             }
         }
     }
     private void SetState_Idle()                        { state = BehaviorState.Idle;                       animator.SetBool("isMoving", false);    ResetStateTime(Random.Range(0.5f, 2.0f)); }
     private void SetState_Move()                        { state = BehaviorState.Moving;                     animator.SetBool("isMoving", true);     ResetStateTime(Random.Range(0.5f, 2.0f));   ResetViewDir(); }
-    private void SetState_BikeIn()                      { state = BehaviorState.Bike_in;                    animator.SetTrigger("isBike");          ResetStateTime(0);                          myWeaponController_MG.GetComponent<SpriteRenderer>().enabled = false; }
+    private void SetState_BikeIn()                      { state = BehaviorState.Bike_in;                    animator.SetTrigger("isBike");          ResetStateTime(0);                          weapon_MG.GetComponent<SpriteRenderer>().enabled = false; }
     private void SetState_BikeRiding()                  { state = BehaviorState.Bike_riding;                                                        ResetStateTime(0); }
     private void SetState_BikeOut()                     { state = BehaviorState.Bike_out;                                                           ResetStateTime(0); }
     private void SetState_AttackMachinegun()            { state = BehaviorState.Attack_machinegun;          animator.SetBool("isMoving", false);    ResetStateTime(Random.Range(0.5f, 5.0f)); }
@@ -208,7 +205,7 @@ public class BBoss : Enemy {
     {
         SetState_AttackMachinegun();
         animator.ResetTrigger("isBikeFinish");
-        myWeaponController_MG.GetComponent<SpriteRenderer>().enabled = true;
+        weapon_MG.GetComponent<SpriteRenderer>().enabled = true;
     }
 
 

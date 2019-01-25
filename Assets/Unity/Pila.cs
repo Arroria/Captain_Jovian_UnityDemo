@@ -20,7 +20,7 @@ public sealed class Pila : Enemy {
     protected override void StateUpdate()
     {
         if (BehaviorState.Moving == state)
-            transform.position += Vector2ex.To3(ViewDir());
+            transform.position += Vector2ex.To3(Direction());
     }
 
     public override void OnCollisionEnter2DByPhysicalCollider(Collision2D collision) { SetStateMove(); }

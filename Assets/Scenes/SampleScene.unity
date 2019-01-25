@@ -122,7 +122,7 @@ GameObject:
   m_Component:
   - component: {fileID: 26039328}
   - component: {fileID: 26039327}
-  - component: {fileID: 26039326}
+  - component: {fileID: 26039329}
   - component: {fileID: 26039325}
   m_Layer: 0
   m_Name: BBoss Weapon_MG
@@ -140,26 +140,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 26039324}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de6bf2463c5d006468d7d29e81c3d6f6, type: 3}
+  m_Script: {fileID: 11500000, guid: e57f02169d3f638498b798b74796f128, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 3714432305029615236, guid: 38b1e8b62017a9347911ad0eebfc0387,
+  weaponOwner: {fileID: 1433050827}
+  projectilePrefab: {fileID: 3714432305029615236, guid: 38b1e8b62017a9347911ad0eebfc0387,
     type: 3}
-  cooldownMax: 0.05
---- !u!114 &26039326
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 26039324}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3ecf503a4ec8444e8d026203b561764, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isUseRotation: 1
-  angle: 0
+  lrFliper: {fileID: 26039329}
+  maxCooldown: 0.1
 --- !u!212 &26039327
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -222,6 +210,21 @@ Transform:
   m_Father: {fileID: 1433050831}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &26039329
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 26039324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe796991f3e92a94494212e4a7f6ef98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 26039327}
+  isRotatable: 1
+  angle: 0
 --- !u!1 &80544637
 GameObject:
   m_ObjectHideFlags: 0
@@ -355,7 +358,7 @@ GameObject:
   - component: {fileID: 113073891}
   - component: {fileID: 113073890}
   - component: {fileID: 113073889}
-  - component: {fileID: 113073895}
+  - component: {fileID: 113073894}
   m_Layer: 0
   m_Name: Brigand
   m_TagString: Enemy
@@ -375,9 +378,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6261b916dec60ad448e36b6bdf5a0d24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 10
+  maxHealthPoint: 10
+  healthPoint: 10
+  direction: {x: 0, y: 0}
   stunTime_unit: 0.2
-  myWeapon: {fileID: 909661152}
+  weapon: {fileID: 909661154}
   weaponRotateSpeed: 720
 --- !u!61 &113073890
 BoxCollider2D:
@@ -483,12 +488,12 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 8057062729448270775}
   - {fileID: 909661153}
+  - {fileID: 8057062729448270775}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &113073895
+--- !u!114 &113073894
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -497,11 +502,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 113073888}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3ecf503a4ec8444e8d026203b561764, type: 3}
+  m_Script: {fileID: 11500000, guid: abba89e9eeff90d42a41ea417ef85c6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isUseRotation: 0
-  angle: 0
+  spriteRenderer: {fileID: 113073892}
 --- !u!1 &170076733
 GameObject:
   m_ObjectHideFlags: 0
@@ -707,8 +711,8 @@ GameObject:
   m_Component:
   - component: {fileID: 324997759}
   - component: {fileID: 324997761}
-  - component: {fileID: 324997760}
   - component: {fileID: 324997762}
+  - component: {fileID: 324997760}
   m_Layer: 0
   m_Name: Weapon
   m_TagString: Untagged
@@ -742,9 +746,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e57f02169d3f638498b798b74796f128, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 1376509152212704, guid: af35837b9acc3674da3c5bfcb59fae2c,
+  weaponOwner: {fileID: 1972082566}
+  projectilePrefab: {fileID: 1376509152212704, guid: af35837b9acc3674da3c5bfcb59fae2c,
     type: 3}
-  coolTimeMax: 0.25
+  lrFliper: {fileID: 324997762}
+  maxCooldown: 0.25
 --- !u!212 &324997761
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -802,10 +808,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 324997758}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3ecf503a4ec8444e8d026203b561764, type: 3}
+  m_Script: {fileID: 11500000, guid: fe796991f3e92a94494212e4a7f6ef98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isUseRotation: 1
+  spriteRenderer: {fileID: 324997761}
+  isRotatable: 1
   angle: 0
 --- !u!1 &527749917
 GameObject:
@@ -3719,11 +3726,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 534696239}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3ecf503a4ec8444e8d026203b561764, type: 3}
+  m_Script: {fileID: 11500000, guid: abba89e9eeff90d42a41ea417ef85c6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isUseRotation: 0
-  angle: 0
+  spriteRenderer: {fileID: 534696244}
 --- !u!114 &534696241
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3736,9 +3742,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d6e2ec9eeaf7ff4381a68cc7e74f95f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 10
+  maxHealthPoint: 20
+  healthPoint: 20
+  direction: {x: 0, y: 0}
   stunTime_unit: 0.2
-  myWeapon: {fileID: 1393684454}
+  weapon: {fileID: 1393684456}
   weaponRotateSpeed: 720
 --- !u!61 &534696242
 BoxCollider2D:
@@ -3844,8 +3852,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1848024375}
   - {fileID: 1393684455}
+  - {fileID: 1848024375}
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4010,7 +4018,7 @@ GameObject:
   m_Component:
   - component: {fileID: 909661153}
   - component: {fileID: 909661156}
-  - component: {fileID: 909661155}
+  - component: {fileID: 909661157}
   - component: {fileID: 909661154}
   m_Layer: 0
   m_Name: Brigand Weapon
@@ -4031,7 +4039,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 113073893}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &909661154
 MonoBehaviour:
@@ -4042,26 +4050,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 909661152}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de6bf2463c5d006468d7d29e81c3d6f6, type: 3}
+  m_Script: {fileID: 11500000, guid: e57f02169d3f638498b798b74796f128, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 3714432305029615236, guid: 38b1e8b62017a9347911ad0eebfc0387,
+  weaponOwner: {fileID: 113073889}
+  projectilePrefab: {fileID: 3714432305029615236, guid: 38b1e8b62017a9347911ad0eebfc0387,
     type: 3}
-  cooldownMax: 1
---- !u!114 &909661155
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 909661152}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3ecf503a4ec8444e8d026203b561764, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isUseRotation: 1
-  angle: 0
+  lrFliper: {fileID: 909661157}
+  maxCooldown: 1
 --- !u!212 &909661156
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4110,6 +4106,21 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &909661157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 909661152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe796991f3e92a94494212e4a7f6ef98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 909661156}
+  isRotatable: 1
+  angle: 0
 --- !u!1 &935585083
 GameObject:
   m_ObjectHideFlags: 0
@@ -4120,7 +4131,7 @@ GameObject:
   m_Component:
   - component: {fileID: 935585087}
   - component: {fileID: 935585086}
-  - component: {fileID: 935585085}
+  - component: {fileID: 935585088}
   - component: {fileID: 935585084}
   m_Layer: 0
   m_Name: BBoss Weapon_GL
@@ -4138,26 +4149,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 935585083}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de6bf2463c5d006468d7d29e81c3d6f6, type: 3}
+  m_Script: {fileID: 11500000, guid: e57f02169d3f638498b798b74796f128, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 1741882070931441941, guid: aa28a01fab5e51c41afb51562f5f99e8,
+  weaponOwner: {fileID: 1433050827}
+  projectilePrefab: {fileID: 1741882070931441941, guid: aa28a01fab5e51c41afb51562f5f99e8,
     type: 3}
-  cooldownMax: 0.15
---- !u!114 &935585085
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 935585083}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3ecf503a4ec8444e8d026203b561764, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isUseRotation: 1
-  angle: 0
+  lrFliper: {fileID: 935585088}
+  maxCooldown: 0.5
 --- !u!212 &935585086
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4220,6 +4219,21 @@ Transform:
   m_Father: {fileID: 1433050831}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &935585088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 935585083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe796991f3e92a94494212e4a7f6ef98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 935585086}
+  isRotatable: 1
+  angle: 0
 --- !u!1 &1393684454
 GameObject:
   m_ObjectHideFlags: 0
@@ -4230,7 +4244,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1393684455}
   - component: {fileID: 1393684458}
-  - component: {fileID: 1393684457}
+  - component: {fileID: 1393684459}
   - component: {fileID: 1393684456}
   m_Layer: 0
   m_Name: Assassin Weapon
@@ -4246,12 +4260,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1393684454}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -0.01}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 534696245}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1393684456
 MonoBehaviour:
@@ -4262,26 +4276,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1393684454}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de6bf2463c5d006468d7d29e81c3d6f6, type: 3}
+  m_Script: {fileID: 11500000, guid: e57f02169d3f638498b798b74796f128, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 3714432305029615236, guid: 38b1e8b62017a9347911ad0eebfc0387,
+  weaponOwner: {fileID: 534696241}
+  projectilePrefab: {fileID: 3714432305029615236, guid: 38b1e8b62017a9347911ad0eebfc0387,
     type: 3}
-  cooldownMax: 1
---- !u!114 &1393684457
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1393684454}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3ecf503a4ec8444e8d026203b561764, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isUseRotation: 1
-  angle: 0
+  lrFliper: {fileID: 1393684459}
+  maxCooldown: 0.33333334
 --- !u!212 &1393684458
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4330,6 +4332,21 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1393684459
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1393684454}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe796991f3e92a94494212e4a7f6ef98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 1393684458}
+  isRotatable: 1
+  angle: 0
 --- !u!1 &1433050825
 GameObject:
   m_ObjectHideFlags: 0
@@ -4361,11 +4378,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1433050825}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3ecf503a4ec8444e8d026203b561764, type: 3}
+  m_Script: {fileID: 11500000, guid: abba89e9eeff90d42a41ea417ef85c6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isUseRotation: 0
-  angle: 0
+  spriteRenderer: {fileID: 1433050830}
 --- !u!114 &1433050827
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4378,10 +4394,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57bb4323748572b45888a0c10fbd499c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 50
+  maxHealthPoint: 100
+  healthPoint: 50
+  direction: {x: 0, y: 0}
   stunTime_unit: 0
   myWeapon_MG: {fileID: 26039324}
   myWeapon_GL: {fileID: 935585083}
+  weapon_MG: {fileID: 26039325}
+  weapon_GrenadeLauncher: {fileID: 935585084}
   bikeSpeed: 200
   weaponRotateSpeed: 720
 --- !u!61 &1433050828
@@ -4645,7 +4665,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 534696245}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1848024376
 MonoBehaviour:
@@ -4856,11 +4876,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1972082562}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3ecf503a4ec8444e8d026203b561764, type: 3}
+  m_Script: {fileID: 11500000, guid: abba89e9eeff90d42a41ea417ef85c6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isUseRotation: 0
-  angle: 0
+  spriteRenderer: {fileID: 1972082565}
 --- !u!4 &1972082564
 Transform:
   m_ObjectHideFlags: 0
@@ -4937,15 +4956,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25a4cdfeee621bd4a9b36be1a0fed631, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealthPoint: 20
+  healthPoint: 15
+  direction: {x: 0, y: 0}
   velocity: 100
   spriteRenderer: {fileID: 1972082565}
   animator: {fileID: 1972082567}
   cursor: {fileID: 694959781}
   myWeapon: {fileID: 324997758}
-  health: 10
   hitCooldown_unit: 2
   hitEffect_unit: 0.2
-  myDirection: {x: 0, y: 0}
 --- !u!95 &1972082567
 Animator:
   serializedVersion: 3
@@ -5021,11 +5041,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2109817955}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3ecf503a4ec8444e8d026203b561764, type: 3}
+  m_Script: {fileID: 11500000, guid: abba89e9eeff90d42a41ea417ef85c6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isUseRotation: 0
-  angle: 0
+  spriteRenderer: {fileID: 2109817960}
 --- !u!114 &2109817957
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5038,7 +5057,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b461b3014b551a45bef9f8b782073ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 5
+  maxHealthPoint: 5
+  healthPoint: 5
+  direction: {x: 0, y: 0}
   stunTime_unit: 0.2
 --- !u!61 &2109817958
 BoxCollider2D:
@@ -5341,5 +5362,5 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 113073893}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
