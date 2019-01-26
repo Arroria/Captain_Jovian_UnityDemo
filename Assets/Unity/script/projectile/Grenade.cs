@@ -20,4 +20,6 @@ public class Grenade : Projectile
             base.Update();
         }
     }
+
+    public bool IsBraked() { return brake >= brake_max; }
 }
